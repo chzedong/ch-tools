@@ -1,0 +1,29 @@
+{
+  "name": "ch-tools",
+  "version": "1.0.0",
+  "description": "try feature",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "yarn workspace @ch-tools/app dev"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chzedong/ch-tools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chzedong/ch-tools/issues"
+  },
+  "homepage": "https://github.com/chzedong/ch-tools#readme",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.6"
+  }
+}
