@@ -6,12 +6,13 @@
   "scripts": {
     "start-server": "node server.js",
     "start-vite": "vite dev",
-     "dev": "npm-run-all -p start-server start-vite"
+    "dev": "npm-run-all -p start-server start-vite"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ch-tools/fetch": "*"
+    "@ch-tools/fetch": "*",
+    "express": "^4.21.2"
   }
 }

@@ -1,4 +1,4 @@
-import vite, { defineConfig } from "vite";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   server: {
@@ -11,4 +11,3 @@ export default defineConfig({
     // 模拟一个接口
   },
 });
-    
