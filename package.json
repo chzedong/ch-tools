@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "yarn workspace @ch-tools/app dev",
     "emit": "yarn tsc --noEmit false --emitDeclarationOnly --declaration --outDir ./lib --skipLibCheck true",
-    "build": "yarn workspace @ch-tools/fetch build"
+    "release": "lerna publish --ignore-changes @ch-tools/app"
   },
   "workspaces": [
     "packages/*"
