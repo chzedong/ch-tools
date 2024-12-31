@@ -7,7 +7,7 @@ class Fetch {
   private middlewares: middlewareFn[] = []
 
   /**
-   * Add a middleware to the fetch middleware stack
+   * Add a middleware to the fetch middleware stack, the middleware will be executed in the order it was added
    * @param middleware fetch middleware
    */
   use(middleware: middlewareFn) {
