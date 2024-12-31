@@ -1,6 +1,6 @@
 {
   "name": "@ch-tools/app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "private": true,
   "main": "index.js",
@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ch-tools/fetch": "*",
+    "@ch-tools/fetch": "^1.0.4",
     "express": "^4.21.2"
   }
 }
