@@ -2,10 +2,14 @@
   "name": "@ch-tools/fetch",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build"
+    "emit": "yarn tsc --noEmit false --emitDeclarationOnly --declaration --outDir ./dist --skipLibCheck true",
+    "dist": "vite build",
+    "build": "npm-run-all --serial dist emit"
   },
   "keywords": [],
   "author": "",

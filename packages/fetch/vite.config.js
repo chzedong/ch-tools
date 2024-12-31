@@ -7,13 +7,12 @@ export default vite.defineConfig({
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
       formats: ["es", 'cjs'],
+      fileName: (format) => `index.${format}.js`,
     },
     minify: true,
     rollupOptions: {
-
       output: {
-        // 输出文件名
-        dir: path.resolve(__dirname, "../../lib"),
+        dir: path.resolve(__dirname, "dist"),
       },
     },
   },
