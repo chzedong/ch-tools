@@ -4,5 +4,6 @@
   "npmClient": "yarn",
   "packages": [
     "packages/*"
-  ]
+  ],
+  "allowBranch": "main"
 }
