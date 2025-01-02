@@ -8,6 +8,5 @@ export default defineConfig({
         target: "http://localhost:1337",
       },
     },
-    // 模拟一个接口
   },
 });

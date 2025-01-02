@@ -6,9 +6,7 @@
   "private": true,
   "scripts": {
     "lerna:watch": "lerna watch -- lerna run build --scope=%LERNA_PACKAGE_NAME%",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "app:dev": "yarn workspace @ch-tools/app dev",
-    "emit": "yarn tsc --noEmit false --emitDeclarationOnly --declaration --outDir ./lib --skipLibCheck true",
     "release": "lerna publish --no-private",
     "build": "lerna run build",
     "graph": "npx nx graph",
