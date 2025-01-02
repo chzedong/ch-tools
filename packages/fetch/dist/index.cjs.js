@@ -1,0 +1,1 @@
+"use strict";class d{constructor(){this.middlewares=[]}use(e){this.middlewares.push(e)}async fetch(e,t){let s=this.middlewares.length-1;const r=async()=>{if(s<0)return fetch(e,t);const c=this.middlewares[s];return s-=1,c(e,t,r)};return r()}}module.exports=d;

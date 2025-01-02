@@ -1,4 +1,4 @@
-import Fetch from '@ch-tools/fetch'
+import Fetch from 'ch-tools-fetch'
 
 const runFetch = async () => {
   const fetchWrap = new Fetch()

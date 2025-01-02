@@ -5,10 +5,14 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "lerna:watch": "lerna watch -- lerna run build --scope=%LERNA_PACKAGE_NAME%",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "yarn workspace @ch-tools/app dev",
+    "app:dev": "yarn workspace @ch-tools/app dev",
     "emit": "yarn tsc --noEmit false --emitDeclarationOnly --declaration --outDir ./lib --skipLibCheck true",
-    "release": "lerna publish --no-private"
+    "release": "lerna publish --no-private",
+    "build": "lerna run build",
+    "graph": "npx nx graph",
+    "dev": "npm-run-all --parallel app:dev lerna:watch"
   },
   "workspaces": [
     "packages/*"
