@@ -5,7 +5,7 @@ import path from "path";
 export default vite.defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, "lib/index.ts"),
+      entry: path.resolve(__dirname, "src/index.ts"),
       formats: ["es", 'cjs'],
       fileName: (format) => `index.${format}.js`,
     },

@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "lerna:watch": "lerna watch -- lerna run build --scope=%LERNA_PACKAGE_NAME%",
+    "lerna:watch": "chokidar \"packages/*/src/**/*\" -c \"yarn build\"",
     "app:dev": "yarn workspace @ch-tools/app dev",
     "release": "lerna publish --no-private",
     "build": "lerna run build",
@@ -33,6 +33,7 @@
     "prettier": "^3.4.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.6"
+    "vite": "^6.0.6",
+    "chokidar-cli": "^3.0.0"
   }
 }

@@ -9,7 +9,6 @@ type Interceptor<T> = (command: T, next: () => Promise<void>) => Promise<void>
 export class Menu<T> {
   private config: MenuItem<T>[] = []
 
-
   private interceptors: Interceptor<T>[] = []
 
   constructor(private root: HTMLElement) {
