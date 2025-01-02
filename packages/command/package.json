@@ -1,6 +1,6 @@
 {
-  "name": "ch-tools-fetch",
-  "version": "1.0.6",
+  "name": "ch-tools-command",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
@@ -13,6 +13,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "gitHead": "759d126408a09d272c64c18658f8db2e7a74b7a5"
+  "license": "ISC"
 }

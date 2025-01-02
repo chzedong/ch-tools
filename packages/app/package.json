@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "ch-tools-fetch": "^1.0.4",
+    "ch-tools-command": "^1.0.0",
     "express": "^4.21.2"
   }
 }
