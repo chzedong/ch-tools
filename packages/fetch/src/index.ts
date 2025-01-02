@@ -11,7 +11,7 @@ class Fetch {
    * @param middleware fetch middleware
    */
   use(middleware: middlewareFn) {
-    this.middlewares.push(middleware)
+    // this.middlewares.push(middleware)
   }
 
   /**
