@@ -1,6 +1,6 @@
-class s {
+class c {
   constructor(e) {
-    this.root = e, this.config = [], this.handleClick = (t) => {
+    this.root = e, this.config = [], this.interceptors = [], this.handleClick = (t) => {
       const n = t.target.getAttribute("data-name");
       n && this.executeCommand(n);
     }, e.addEventListener("click", this.handleClick);
@@ -8,19 +8,33 @@ class s {
   addMenuItem(e) {
     this.config.push(e);
   }
+  use(e) {
+    this.interceptors.push(e);
+  }
   render() {
     this.config.forEach((e) => {
       const t = e.render();
       this.root.appendChild(t);
     });
   }
-  executeCommand(e) {
+  async _executeCommand(e) {
     this.config.forEach((t) => {
       t.execute(e);
     });
   }
+  executeCommand(e) {
+    let t = this.interceptors.length - 1;
+    const i = async () => {
+      if (t > -1) {
+        const n = this.interceptors[t];
+        t--, await n(e, i);
+      } else
+        await this._executeCommand(e);
+    };
+    i();
+  }
 }
-class a {
+class r {
   constructor(e) {
     this.config = e;
   }
@@ -33,6 +47,6 @@ class a {
   }
 }
 export {
-  s as Menu,
-  a as MenuItem
+  c as Menu,
+  r as MenuItem
 };

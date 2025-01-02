@@ -110,6 +110,7 @@
   },
 
   "exclude": [
-    "packages/app"
+    "packages/app",
+    "dist/",
   ]
 }

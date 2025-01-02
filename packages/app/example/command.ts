@@ -24,9 +24,9 @@ class Editor {
 const editor = new Editor()
 const root = document.getElementById('root') as HTMLElement;
 
-const menu = new Menu(root)
+const menu = new Menu<Command>(root)
 
-const copy = new MenuItem({
+const copy = new MenuItem<Command>({
   name: 'copy',
   label: 'Copy',
   execute: (command: Command) => {
@@ -35,7 +35,7 @@ const copy = new MenuItem({
   }
 })
 
-const cut = new MenuItem({
+const cut = new MenuItem<Command>({
   name: 'cut',
   label: 'Cut',
   execute: (command: Command) => {
@@ -44,7 +44,7 @@ const cut = new MenuItem({
   }
 })
 
-const paste = new MenuItem({
+const paste = new MenuItem<Command>({
   name: 'paste',
   label: 'Paste',
   execute: (command: Command) => {
@@ -57,6 +57,16 @@ menu.addMenuItem(copy)
 menu.addMenuItem(cut)
 menu.addMenuItem(paste)
 
+menu.use(async(command: Command, next) => {
+  console.log('before', command)
 
+  if(command === 'copy') {
+    console.log('copy is disabled')
+    return
+  }
+
+  await next()
+  console.log('after', command)
+})
 
 menu.render()
