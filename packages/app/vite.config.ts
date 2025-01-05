@@ -1,4 +1,6 @@
 import { defineConfig } from "vite";
+// react 插件
+import reactRefresh from "@vitejs/plugin-react-refresh";
 
 export default defineConfig({
   server: {
@@ -9,4 +11,5 @@ export default defineConfig({
       },
     },
   },
+  plugins: [reactRefresh()],
 });
