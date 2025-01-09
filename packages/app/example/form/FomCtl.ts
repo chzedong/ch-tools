@@ -1,38 +1,42 @@
-import React from 'react'
-import { FieldProps, FieldType, FormSchema } from './type'
-import { widgetsMap } from './widgets'
-
+import { FieldType, FormPlugin, FormSchema } from './type'
+import { SchemaParser as SchemaParser } from './schemaParser'
 
 const cloneDeep = (obj: any) => JSON.parse(JSON.stringify(obj))
-export class FormCtl {
-  schema: FormSchema
+
+class EventEmit {
+  listeners: any[] = []
+
+  on(cb: any) {
+    this.listeners.push(cb)
+  }
+
+  emit(args: any) {
+    this.listeners.forEach(cb => cb(args))
+  }
+}
+
+export class FormCtl extends EventEmit {
+  schemaParser: SchemaParser
   fields: FieldType[]
-  fieldProps: FieldProps[]
+
+  plugins: FormPlugin[] = []
 
   constructor(schema: FormSchema) {
-    this.schema = schema
+    super()
 
-    this.fields = this.initFields()
-    this.fieldProps = this.initFieldProps()
+    this.schemaParser = new SchemaParser(schema)
+
+    this.fields = this._initFields()
   }
 
-  initFieldProps(): FieldProps[] {
-    return Object.keys(this.schema.properties).map(key => {
-      const property = this.schema.properties[key]
-      return {
-        component: widgetsMap[property.type],
-        label: property.title,
-        name: [key],
-        rules: [{ required: this.schema.required?.includes(key), message: `${property.title}不能为空` }]
-      }
-    })
-  }
+  // fields相关
+  _initFields(): FieldType[] {
+    return Object.keys(this.schemaParser.getProperties()).map(key => {
+      const property = this.schemaParser.getProperty(key)
 
-  initFields(): FieldType[] {
-    return Object.keys(this.schema.properties).map(key => {
       return {
         name: [key],
-        value: this.schema.properties[key].type === 'number' ? 0 : '',
+        value: property.type === 'number' ? 0 : '',
         errors: [],
         validating: false,
         validated: false,
@@ -54,10 +58,12 @@ export class FormCtl {
   replaceField = (field: FieldType) => {
     this._replaceField(field)
 
-    this.fields = [...this.fields]
+    this.notify()
   }
 
   _validateField(field: FieldType) {
+    const fieldName = this._genKey(field.name)
+
     const index = this.fields.findIndex(f => {
       return this._genKey(f.name) === this._genKey(field.name)
     })
@@ -66,8 +72,8 @@ export class FormCtl {
     field.touched = true
 
     // required
-    if (this.schema.required?.includes(field.name[0]) && !field.value) {
-      field.errors = [`${this.fieldProps[index].label}不能为空`]
+    if (this.schemaParser.isRequired(fieldName) && !field.value) {
+      field.errors = [`${this.schemaParser.getProperty(fieldName).title}不能为空`]
     } else {
       field.errors = []
     }
@@ -78,7 +84,7 @@ export class FormCtl {
   validateField = (field: FieldType) => {
     this._validateField(field)
 
-    this.fields = [...this.fields]
+    this.notify()
   }
 
   validateAll = () => {
@@ -86,47 +92,27 @@ export class FormCtl {
       this._validateField(field)
     })
 
-    this.fields = cloneDeep(this.fields)
-  }
-}
-
-const useUpdate = () => {
-  const [, setState] = React.useState({})
-  return () => setState({})
-}
-
-export const useFormCtl = (schema: FormSchema) => {
-  const ctlRef = React.useRef<FormCtl>(null)
-  if (!ctlRef.current) {
-    ctlRef.current = new FormCtl(schema)
+    this.notify()
   }
 
-  const update = useUpdate()
-
-  const fields = ctlRef.current.fields
-  const fieldProps = ctlRef.current.fieldProps
-
-  const validateField = (field: FieldType) => {
-    ctlRef.current?.validateField(field)
-    update()
+  getField(key: string) {
+    return this.fields.find(f => this._genKey(f.name) === key)
   }
 
-  const validateAll = () => {
-    ctlRef.current?.validateAll()
-    update()
+  // 通信相关
+  notify = () => {
+    this.emit(cloneDeep(this.fields))
   }
 
-  const replaceField = (field: FieldType) => {
-    ctlRef.current?.replaceField(field)
-    update()
+  // 插件相关
+  addPlugin = (plugin: FormPlugin) => {
+    this.plugins.push(plugin)
+    plugin.apply(this)
   }
 
-  return [
-    { fields, fieldProps },
-    {
-      validateField,
-      validateAll,
-      replaceField
-    }
-  ] as const
+  applyPluginsBlurChange = (key: string) => {
+    this.plugins.forEach(plugin => {
+      plugin.onBlur(key)
+    })
+  }
 }

@@ -1,5 +1,6 @@
 import { Rule } from 'antd/es/form'
 import { FunctionComponent } from 'react'
+import { FormCtl } from './fomCtl'
 
 export interface FieldType<T = any> {
   name: string[]
@@ -27,7 +28,15 @@ export interface FormSchema {
     [key: string]: {
       type: string
       title: string
+      trigger?: string[]
     }
   }
   required?: string[]
+}
+
+// from ctl 支持插件
+export abstract class FormPlugin {
+  abstract apply(ctl: FormCtl): void
+
+  abstract onBlur(key: string): void
 }
