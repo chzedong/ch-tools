@@ -34,25 +34,19 @@ const schema = {
 }
 
 const Demo = () => {
-
   const [{ fieldProps, fields }, ctl] = useForm(schema, widgets)
 
   const formItems = fieldProps.map((field, index) => {
     const FieldComponent = field.component
 
     return (
-      <Form.Item
-        key={index}
-        label={field.label}
-        name={field.name}
-        rules={field.rules}
-      >
+      <Form.Item key={index} label={field.label} name={field.name} rules={field.rules}>
         <FieldComponent {...field.events} addPlugin={ctl.addPlugin} />
       </Form.Item>
     )
   })
 
-  // console.log(fields, fieldProps)
+  console.log('render: ', fields, fieldProps)
   return (
     <>
       <Form

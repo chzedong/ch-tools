@@ -50,7 +50,7 @@ export class PluginHandler {
         }
 
         if (snap[index]) {
-          field.value = snap[index].value
+          this.formCtl.fields[index] = { ...field, value: snap[index].value }
         }
       })
 

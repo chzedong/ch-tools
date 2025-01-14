@@ -72,7 +72,7 @@ class ComputedPlugin implements FormPlugin {
       })
 
       return fields.map(field => {
-        if (genKey(field.name) === key) {
+        if (genKey(field.name) === 'computed') {
           return {
             ...field,
             value: ret
