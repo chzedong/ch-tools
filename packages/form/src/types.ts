@@ -1,7 +1,6 @@
 import { Rule } from 'antd/es/form'
 import { FunctionComponent } from 'react'
-import { FormCtl } from './fomCtl'
-
+import { FormController } from './handler/controller'
 
 export interface FieldType<T = any> {
   name: string[]
@@ -12,10 +11,7 @@ export interface FieldType<T = any> {
   value?: T
 }
 
-export type FieldSnapshot<T = any> = {
-  name: string
-  value: T
-}
+export type FieldSnapshot = FieldType
 
 // field 校验相关
 interface FieldValidate {
@@ -40,9 +36,12 @@ export interface FormSchema {
   required?: string[]
 }
 
-// from ctl 支持插件
-export abstract class FormPlugin {
-  abstract apply(ctl: FormCtl): Promise<void>
+export interface FormPlugin {
+  name: string
 
-  abstract onBlur(key: string, fields: FieldSnapshot[]): Promise<FieldSnapshot[]>
+  component: FunctionComponent | any
+
+  apply(ctl: FormController): void
+
+  onBlur?(key: string, fields: FieldSnapshot[]): Promise<FieldSnapshot[]>
 }

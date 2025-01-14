@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form } from 'antd'
-import { useForm } from '../useForm'
+import { useForm } from 'ch-tools-form'
+import * as widgets from '../widgets'
 
 export const App = () => {
   return (
@@ -15,7 +16,7 @@ const schema = {
   type: 'object',
   properties: {
     name: {
-      type: 'string',
+      type: 'name',
       title: '姓名'
     },
     age: {
@@ -29,19 +30,23 @@ const schema = {
       trigger: ['name:blur', 'age:blur']
     }
   },
-  required: ['name']
+  required: ['input']
 }
 
 const Demo = () => {
-  const [{ fieldProps, fields }, ctl] = useForm(schema)
 
-  // 根据schema生成表单项
+  const [{ fieldProps, fields }, ctl] = useForm(schema, widgets)
+
   const formItems = fieldProps.map((field, index) => {
     const FieldComponent = field.component
 
     return (
-      <Form.Item shouldUpdate={(...args) => {console.log(args); return true}} key={index} label={field.label} name={field.name} rules={field.rules}>
-        {/* field component 只负责根据当前field表单数据渲染不同类型的表单组件，至于不同表单项的交互，比如联动抽象到插件里面去实现 */}
+      <Form.Item
+        key={index}
+        label={field.label}
+        name={field.name}
+        rules={field.rules}
+      >
         <FieldComponent {...field.events} addPlugin={ctl.addPlugin} />
       </Form.Item>
     )

@@ -1,7 +1,6 @@
-import { FormSchema } from "./type"
+import { FormSchema } from '../types'
 
 export class SchemaParser {
-
   constructor(private schema: FormSchema) {}
 
   getProperty = (name: string) => {

@@ -1,9 +1,20 @@
-import { Input, InputNumber } from "antd";
-import { Computed } from "../render/Computed";
+import { Input, InputNumber } from 'antd'
+import ComputedPlugin from './Computed'
 
-// 物料，根据json schema生成表单项，主要用于react组件的渲染
-export const widgetsMap = {
-  string: Input,
-  number: InputNumber,
-  computed: Computed
+export const InputPlugin = {
+  name: 'name',
+  component: Input,
+  apply() {
+    console.log('apply input plugin')
+  }
 }
+
+export const InputNumberPlugin = {
+  name: 'age',
+  component: InputNumber,
+  apply() {
+    console.log('apply inputNumber plugin')
+  }
+}
+
+export { ComputedPlugin }
