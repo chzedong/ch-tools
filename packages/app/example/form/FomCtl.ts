@@ -1,5 +1,6 @@
-import { FieldType, FormPlugin, FormSchema } from './type'
+import { FieldSnapshot, FieldType, FormPlugin, FormSchema } from './type'
 import { SchemaParser as SchemaParser } from './schemaParser'
+import { scheduleTask } from './scheduleTask'
 
 const cloneDeep = (obj: any) => JSON.parse(JSON.stringify(obj))
 
@@ -18,6 +19,15 @@ class EventEmit {
 export class FormCtl extends EventEmit {
   schemaParser: SchemaParser
   fields: FieldType[]
+
+  createFieldSnapshot = (): FieldSnapshot[] => {
+    return this.fields.map(field => {
+      return {
+        name: field.name.join('.'),
+        value: field.value
+      }
+    })
+  }
 
   plugins: FormPlugin[] = []
 
@@ -100,19 +110,53 @@ export class FormCtl extends EventEmit {
   }
 
   // 通信相关
+  private _timer = 0
   notify = () => {
-    this.emit(cloneDeep(this.fields))
+    if (this._timer) {
+      return
+    }
+
+    // 节流 每一个宏任务批量更新
+    this._timer = setTimeout(() => {
+      console.info('notify:', this.fields)
+      this.emit(cloneDeep(this.fields))
+      clearTimeout(this._timer)
+      this._timer = 0
+    }, 0)
   }
 
   // 插件相关
   addPlugin = (plugin: FormPlugin) => {
     this.plugins.push(plugin)
-    plugin.apply(this)
+    plugin.apply(this) // 插件初始化 会有副作用，可能修改表单，可能异步
   }
 
-  applyPluginsBlurChange = (key: string) => {
-    this.plugins.forEach(plugin => {
-      plugin.onBlur(key)
-    })
+  applyPluginsBlurChange = async (key: string) => {
+
+    const pro = (async () => {
+      let snap = this.createFieldSnapshot()
+      for (const plugin of this.plugins) {
+        snap = await plugin.onBlur(key, snap)
+      }
+      return snap
+    })()
+
+    const task = scheduleTask('blur', pro)
+    try {
+      const snap: FieldSnapshot[] = await task.run()
+
+      this.fields.forEach(field => {
+        const snapItem = snap.find(item => {
+          return item.name === field.name.join('.')
+        })
+        if (snapItem) {
+          field.value = snapItem.value
+        }
+      })
+
+      this.notify()
+    } catch (error) {
+      console.error(error)
+    }
   }
 }

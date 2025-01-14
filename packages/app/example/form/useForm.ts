@@ -12,6 +12,7 @@ export const useForm = (schema: FormSchema) => {
     ctlRef.current.on((_fields: FieldType[]) => {
       setFields(_fields)
     })
+    console.log('useForm: ', ctlRef.current)
   }
 
   const onBlur = (key: string) => {

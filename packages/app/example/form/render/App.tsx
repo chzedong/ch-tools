@@ -40,14 +40,14 @@ const Demo = () => {
     const FieldComponent = field.component
 
     return (
-      <Form.Item key={index} label={field.label} name={field.name} rules={field.rules}>
+      <Form.Item shouldUpdate={(...args) => {console.log(args); return true}} key={index} label={field.label} name={field.name} rules={field.rules}>
         {/* field component 只负责根据当前field表单数据渲染不同类型的表单组件，至于不同表单项的交互，比如联动抽象到插件里面去实现 */}
         <FieldComponent {...field.events} addPlugin={ctl.addPlugin} />
       </Form.Item>
     )
   })
 
-  console.log(fields, fieldProps)
+  // console.log(fields, fieldProps)
   return (
     <>
       <Form

@@ -2,6 +2,7 @@ import { Rule } from 'antd/es/form'
 import { FunctionComponent } from 'react'
 import { FormCtl } from './fomCtl'
 
+
 export interface FieldType<T = any> {
   name: string[]
   errors?: string[]
@@ -9,6 +10,11 @@ export interface FieldType<T = any> {
   validated?: boolean
   touched?: boolean
   value?: T
+}
+
+export type FieldSnapshot<T = any> = {
+  name: string
+  value: T
 }
 
 // field 校验相关
@@ -36,7 +42,7 @@ export interface FormSchema {
 
 // from ctl 支持插件
 export abstract class FormPlugin {
-  abstract apply(ctl: FormCtl): void
+  abstract apply(ctl: FormCtl): Promise<void>
 
-  abstract onBlur(key: string): void
+  abstract onBlur(key: string, fields: FieldSnapshot[]): Promise<FieldSnapshot[]>
 }

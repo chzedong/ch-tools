@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { FormPlugin } from '../type'
+import { FieldSnapshot, FormPlugin } from '../type'
 import { FormCtl } from '../fomCtl'
 
 class ComputedPlugin extends FormPlugin {
@@ -9,7 +9,7 @@ class ComputedPlugin extends FormPlugin {
 
   private depKeys: string[] = [] // 依赖字段，使用场景表单联动 依赖字段变化，计算字段也会变化
 
-  apply(ctl: FormCtl) {
+  async apply(ctl: FormCtl) {
     this.ctl = ctl
 
     const property = ctl.schemaParser.getProperty('computed')
@@ -26,22 +26,22 @@ class ComputedPlugin extends FormPlugin {
       this.depKeys.push(name)
     }
 
-    const ret = this._calculate()
+    const ret = this._calculate(ctl.createFieldSnapshot())
     const field = ctl.getField('computed')!
     field.value = ret
     ctl.replaceField(field)
   }
 
-  _calculate() {
+  _calculate(fields: FieldSnapshot[]) {
     let ret = 0
 
     for (const key of this.depKeys) {
-      const field = this.ctl.getField(key)!
-      if (field.name[0] === 'name') {
+      const field = fields.find(f => f.name === key)!
+      if (field.name === 'name') {
         ret += field.value.length
       }
 
-      if (field.name[0] === 'age') {
+      if (field.name === 'age') {
         ret += field.value
       }
     }
@@ -49,13 +49,27 @@ class ComputedPlugin extends FormPlugin {
     return ret
   }
 
-  onBlur(key: string) {
+
+  list = [1000, 10000, 5000]
+
+  async onBlur(key: string, fields: FieldSnapshot[]) {
     if (this.eventMap['blur'].includes(key)) {
-      const ret = this._calculate()
-      const field = this.ctl.getField('computed')!
-      field.value = ret
-      this.ctl.replaceField(field)
+      const ret = this._calculate(fields)
+
+      // 随机延时
+      await new Promise(resolve => {
+        setTimeout(() => {
+          resolve(ret)
+        }, this.list[Math.round((Math.random() * 1000) % 2)])
+      })
+
+      return [{
+        name: 'computed',
+        value: ret
+      }]
     }
+
+    return []
   }
 }
 
