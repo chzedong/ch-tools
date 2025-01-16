@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Form } from 'antd'
 import { useForm } from 'ch-tools-form'
 import * as widgets from '../widgets'
@@ -41,12 +41,13 @@ const Demo = () => {
 
     return (
       <Form.Item key={index} label={field.label} name={field.name} rules={field.rules}>
-        <FieldComponent {...field.events} addPlugin={ctl.addPlugin} />
+        <FieldComponent {...field.events} />
       </Form.Item>
     )
   })
 
-  console.log('render: ', fields, fieldProps)
+
+  // console.log('render: ', fields, fieldProps)
   return (
     <>
       <Form
@@ -54,6 +55,7 @@ const Demo = () => {
         autoComplete="off"
         fields={fields}
         onFieldsChange={_ => {
+          console.log('change: ', _)
           ctl.replaceField(_[0])
         }}
       >
