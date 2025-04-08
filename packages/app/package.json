@@ -13,6 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@formily/antd": "^2.3.3",
+    "@formily/core": "^2.3.3",
+    "@formily/react": "^2.3.3",
     "antd": "^5.22.7",
     "ch-tools-command": "^1.0.0",
     "ch-tools-event": "*",
@@ -23,6 +26,7 @@
     "mobx": "^6.13.5",
     "mobx-react": "^9.2.0",
     "mobx-react-lite": "^4.1.0",
+    "moment": "^2.30.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-mobx": "^0.0.4",
@@ -31,6 +35,7 @@
   "devDependencies": {
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
-    "@vitejs/plugin-react-refresh": "^1.3.6"
+    "@vitejs/plugin-react-refresh": "^1.3.6",
+    "less": "^4.3.0"
   }
 }

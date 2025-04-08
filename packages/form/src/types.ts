@@ -30,7 +30,8 @@ export interface FormSchema {
     [key: string]: {
       type: string
       title: string
-      trigger?: string[]
+      trigger?: string[],
+      dependencies?: any[]
     }
   }
   required?: string[]
